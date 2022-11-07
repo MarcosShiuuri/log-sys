@@ -1,1 +1,1 @@
-LPM - Login and Project Manageme
+LPM - Login and Project Management
