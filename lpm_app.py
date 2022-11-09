@@ -8,10 +8,17 @@ db.init_app(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
+    username = db.Column(db.String(15), unique=True, nullable=False)
+    password = db.Column(db.String(20), nullable=False)
     def __repr__(self):
-        return '<Users %r>' % self.id
+        return '<User %r>' % self.id
+
+class Projects(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    project_name = db.Column(db.String(35), nullable=False)
+    project_desc = db.Column(db.String(350), nullable=False)
+    def __repr__(self):
+        return '<Projects %r>' % self.id
 with app.app_context():
     db.create_all()
 
@@ -20,11 +27,12 @@ def login():
     if rq.method == 'POST':
         log_username = rq.form.get('log_username')
         log_password = rq.form.get('log_password')
-        un = db.one_or_404(db.select(User).filter_by(username=log_username))
-        if log_username == un.username:
-            return rt('test.html')
-    else:
-        return rt('login.html')
+        user = db.one_or_404(db.select(User).filter_by(username=log_username),
+                            description=f"No username '{log_username}' found.")
+        if log_password == user.password:
+            return rt('pm.html', user=log_username)
+        else: return rt('test.html')
+    else: return rt('login.html')
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
