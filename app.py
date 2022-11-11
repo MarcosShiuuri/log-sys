@@ -1,4 +1,4 @@
-from flask import Flask, render_template as rt, request as rq, jsonify
+from flask import Flask, render_template as rt, request as rq
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, instance_relative_config=True)
@@ -8,41 +8,38 @@ db.init_app(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(15), unique=True, nullable=False)
+    username = db.Column(db.String(15), nullable=False)
     password = db.Column(db.String(20), nullable=False)
     def __repr__(self):
         return '<User %r>' % self.id
-
-class Projects(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    project_name = db.Column(db.String(35), nullable=False)
-    project_desc = db.Column(db.String(350), nullable=False)
-    def __repr__(self):
-        return '<Projects %r>' % self.id
 with app.app_context():
     db.create_all()
 
 @app.route('/', methods=['POST', 'GET'])
 def login():
+    return 'WELCOME TO THE USERS PAGE!'
+
+@app.route('/login', methods=['POST', 'GET'])
+def login():
     if rq.method == 'POST':
-        log_username = rq.form.get('log_username')
-        log_password = rq.form.get('log_password')
-        user = db.one_or_404(db.select(User).filter_by(username=log_username),
-                            description=f"No username '{log_username}' found.")
-        if log_password == user.password:
-            return rt('pm.html', user=log_username)
-        else: return rt('test.html')
+        existing_user = User.query.filter_by(username=rq.form.get('log_username')).first()
+        if existing_user:
+            if rq.form.get('log_password') == existing_user.password:
+                return 'BEM-VINDO'
+            else: return 'SENHA TÁ ERRADA'
+        else: return 'NÃO TEM ESSE USUÁRIO'
     else: return rt('login.html')
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
     if rq.method == 'POST':
-        new_user = User(
-            username = rq.form.get('reg_username'),
-            password = rq.form.get('reg_password'),
-        )
-        db.session.add(new_user)
-        db.session.commit()
-        return rt('test.html')
+        existing_user = User.query.filter_by(username=rq.form.get('reg_username')).first()
+        if existing_user:
+            return 'JÁ TEM esse usuário'
+        else:
+            new_user = User(username = rq.form.get('reg_username'), password = rq.form.get('reg_password'))
+            db.session.add(new_user)
+            db.session.commit()
+            return rt('login.html')
     else:
         return rt('register.html')
