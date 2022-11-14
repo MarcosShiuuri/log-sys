@@ -1,4 +1,4 @@
-from flask import Flask, render_template as rt, request as rq
+from flask import Flask, render_template as rt, request as rq, redirect as rd
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, instance_relative_config=True)
@@ -17,25 +17,28 @@ with app.app_context():
 
 @app.route('/', methods=['POST', 'GET'])
 def login():
-    return 'WELCOME TO THE USERS PAGE!'
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
     if rq.method == 'POST':
         existing_user = User.query.filter_by(username=rq.form.get('log_username')).first()
         if existing_user:
             if rq.form.get('log_password') == existing_user.password:
-                return 'BEM-VINDO'
-            else: return 'SENHA TÁ ERRADA'
-        else: return 'NÃO TEM ESSE USUÁRIO'
-    else: return rt('login.html')
+                users = User.query.order_by(User.id).all()
+                return rt('users.html', username=existing_user.username, users=users)
+            else:
+                error = 'Wrong password!'
+                return  rt('errors.html', error=error)
+        else:
+            error = f'No username "{rq.form.get("log_username")}" found!'
+            return rt('errors.html', error=error)
+    else:
+        return rt('login.html')
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
     if rq.method == 'POST':
         existing_user = User.query.filter_by(username=rq.form.get('reg_username')).first()
         if existing_user:
-            return 'JÁ TEM esse usuário'
+            error = f'This username f"{rq.form.get("log_username")}" already exists!'
+            return  rt('errors.html', error=error)
         else:
             new_user = User(username = rq.form.get('reg_username'), password = rq.form.get('reg_password'))
             db.session.add(new_user)
