@@ -1,1 +1,1 @@
-Login and registration system using Python Flask, HTML5 and CSS3
+Login and registration system using Python Flask, HTML5 and
