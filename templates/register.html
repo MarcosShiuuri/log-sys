@@ -1,11 +1,20 @@
-<h1>REGISTER HOMEPAGE</h1>
-<form action='/register' method='POST'>
-    <label>Username:</label>
-    <input type="text" id="run_id" name="reg_username" maxlength="20" size="20">
-    <br>
-    <label>Password:</label>
-    <input type="password" id="rpw_id" name="reg_password" maxlength="20" size="20">
-    <br>
-    <input type="submit" value="Register">
-    <a href="{{url_for('login')}}">Back</a>
-</form>
+<!DOCTYPE html>
+<html> 
+	<head>
+    	<title>Register</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+	</head>
+	<body>
+	    <h1>REGISTRATION</h1>
+        <form action='/register' method='POST'>
+            <label><b>Username:</b></label>
+            <input type="text" id="run_id" name="reg_username" maxlength="20" size="20" required>
+            <br>
+            <label><b>Password:</b></label>
+            <input type="password" id="rpw_id" name="reg_password" maxlength="20" size="20" required>
+            <br>
+            <input type="submit" value="Register">
+            <input TYPE="button" VALUE="Back" onClick="history.go(-1);">
+        </form>
+	</body>
+</html>

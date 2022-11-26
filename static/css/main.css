@@ -1,0 +1,13 @@
+body {
+    background-color: rgb(124, 58, 58);
+    color: rgb(255, 255, 255);
+}
+
+h1, h3 {
+    font-family: 'Times New Roman';
+}
+
+p {
+    font-family: Georgia;
+    
+}

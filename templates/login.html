@@ -1,11 +1,25 @@
-<h1>LOGIN HOMEPAGE</h1>
-<form action='/' method='POST'>
-    <label>Username:</label>
-    <input type="text" id="un_id" name="log_username" maxlength="15">
-    <br>
-    <label>Password:</label>
-    <input type="password" id="pw_id" name="log_password" maxlength="20">
-    <br>
-    <input type="submit" value="Login">
-    <a href="{{url_for('register')}}">Register</a>
-</form>
+<!DOCTYPE html>
+<html> 
+	<head>
+    	<title>Login</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+	</head>
+	<body>
+	    <h1>LOGIN HOMEPAGE</h1>
+        <form action='/' method='POST'>
+            <label><b>Username:</b></label>
+            <input type="text" id="un_id" name="log_username" maxlength="15" required>
+            <br>
+            <label><b>Password:</b></label>
+            <input type="password" id="pw_id" name="log_password" maxlength="20" required>
+            <br>
+            <input type="submit" value="Login">
+            <button onclick="reg()">Register</button>
+        </form>
+	</body>
+</html>
+
+<script> function reg() {
+    window.location = '/register';
+    }
+</script>

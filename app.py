@@ -1,4 +1,4 @@
-from flask import Flask, render_template as rt, request as rq, redirect as rd
+from flask import Flask, render_template as rt, request as rq
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__, instance_relative_config=True)
@@ -37,8 +37,11 @@ def register():
     if rq.method == 'POST':
         existing_user = User.query.filter_by(username=rq.form.get('reg_username')).first()
         if existing_user:
-            error = f'This username f"{rq.form.get("log_username")}" already exists!'
-            return  rt('errors.html', error=error)
+            error = f'The username "{rq.form.get("reg_username")}" already exist!'
+            return rt('errors.html', error=error)
+        elif {rq.form.get("reg_password")} == None:
+            error = 'Password cannot be empty!'
+            return rt('errors.html', error=error)
         else:
             new_user = User(username = rq.form.get('reg_username'), password = rq.form.get('reg_password'))
             db.session.add(new_user)

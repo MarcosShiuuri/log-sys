@@ -1,5 +1,14 @@
-<h1>ERROR</h1>
-<form action='/'>
-    <p>{{error}}</p>
-    <input TYPE="button" VALUE="Back" onClick="history.go(-1);">
-</form>
+<!DOCTYPE html>
+<html> 
+	<head>
+    	<title>ERROR</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+	</head>
+	<body>
+        <h1>ERROR</h1>
+        <form action='/'>
+            <p>{{error}}</p>
+            <input TYPE="button" VALUE="Back" onClick="history.go(-1);">
+        </form> 
+	</body>
+</html>
