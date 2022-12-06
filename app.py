@@ -24,11 +24,9 @@ def login():
                 users = User.query.order_by(User.id).all()
                 return rt('users.html', username=existing_user.username, users=users)
             else:
-                error = 'Wrong password!'
-                return  rt('errors.html', error=error)
+                return  rt('errors.html', error='Wrong password!')
         else:
-            error = f'No username "{rq.form.get("log_username")}" found!'
-            return rt('errors.html', error=error)
+            return rt('errors.html', error=f'No username "{rq.form.get("log_username")}" found!')
     else:
         return rt('login.html')
 
@@ -40,8 +38,7 @@ def register():
             error = f'The username "{rq.form.get("reg_username")}" already exist!'
             return rt('errors.html', error=error)
         elif {rq.form.get("reg_password")} == None:
-            error = 'Password cannot be empty!'
-            return rt('errors.html', error=error)
+            return rt('errors.html', error='Password cannot be empty!')
         else:
             new_user = User(username = rq.form.get('reg_username'), password = rq.form.get('reg_password'))
             db.session.add(new_user)
